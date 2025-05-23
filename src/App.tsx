@@ -7,8 +7,6 @@ function App() {
     const fetchUsers = async () => {
       try {
         const res = await fetch("https://randomuser.me/api?results=100")
-        console.log("respuesta de usuarios",res.ok);
-        
         if (!res.ok) throw new Error(`HTTPS error! status: ${res.status}`)
       
         const data = await res.json()
