@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import { type User } from './types.d'
+import  UserList from './component/UsersList'
 
 function App() {
-  const [users, setUsers] = useState([])
+  const [users, setUsers] = useState<User[]>([])
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -22,7 +24,7 @@ function App() {
   return (
       <div className='App'>
         <h1>Test</h1>
-        { JSON.stringify(users)}
+        <UserList users={users}/>
       </div>
   )
 }

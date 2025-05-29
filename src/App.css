@@ -12,3 +12,27 @@
 .read-the-docs {
   color: #888;
 }
+
+/* ----------------------------table --------------------------*/
+
+.usersTable {
+  border-collapse: collapse;
+  width: 100%;
+  font-family:Arial, Helvetica, sans-serif;
+  margin: 15px 0;
+}
+
+.usersTable hr {
+  background-color: #f2ffbb;
+  padding: 5px;
+  text-align:center;
+}
+
+.usersTable td {
+  padding: 5px;
+  border-bottom: 1px solid black;
+}
+
+.usersTable tr:nth-child(even) {
+background-color: aquamarine;
+}
