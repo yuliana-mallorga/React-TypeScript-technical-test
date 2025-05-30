@@ -6,41 +6,45 @@ interface Props {
 }
 
 export function UserList({ showColors, users }: Props) {
-
   return (
     <table className="usersTable">
       <thead>
         <tr>
-          <th>Number</th>
+          <th>#</th>
           <th>Photo</th>
-          <th>Name</th>
-          <th>Lastname</th>
+          <th>First Name</th>
+          <th>Last Name</th>
           <th>Country</th>
-          <th>Actions</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
         {users.map((user, index) => {
-          const backgroundColor = index % 2 === 0 ? '#333' : '#555';
-          const backgroundColor2 = index % 2 === 0 ? '#fff' : '#00ffcc';
-          const color = showColors ? backgroundColor : backgroundColor2;
-          
+          const evenRow = index % 2 === 0;
+          const backgroundColor = showColors
+            ? evenRow
+              ? "#444"
+              : "#555"
+            : evenRow
+              ? "#fff"
+              : "#00ffcc";
           return (
-            <tr key={user.login.uuid} style={{backgroundColor: color}}>
+            <tr key={user.login.uuid} style={{ backgroundColor }}>
+              <td>{index + 1}</td>
               <td>
-                { typeof index === 'number' ? index + 1 : ''}
-              </td>
-              <td>
-                <img src={user.picture.medium} alt={user.name.first} />
+                <img
+                  src={user.picture.medium}
+                  alt={`${user.name.first} ${user.name.last}`}
+                  style={{ borderRadius: "10%", width: "40px", height: "40px" }}
+                />
               </td>
               <td>{user.name.first}</td>
               <td>{user.name.last}</td>
               <td>{user.location.country}</td>
               <td>
                 <button
-                  onClick={(user) => {
-                    console.log("onClick function is true", user.altKey, index);
-                  }}
+                  type="button"
+                  onClick={() => console.log("Delete user", user.login.uuid)}
                 >
                   Delete
                 </button>
