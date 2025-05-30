@@ -1,18 +1,24 @@
 #root {
-  max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
 }
-
-.card {
-  padding: 2em;
+/*---------------------menu css---------------------*/
+.menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  text-align: center;
 }
 
-.read-the-docs {
-  color: #888;
+.menu button {
+ padding: 5px 16px;
 }
-
+/*---------------------End of menu css---------------------*/
 /* ----------------------------table --------------------------*/
 
 .usersTable {
@@ -33,6 +39,4 @@
   border-bottom: 1px solid black;
 }
 
-.usersTable tr:nth-child(even) {
-background-color: aquamarine;
-}
+/* ----------------------------End of table CSS --------------------------*/
