@@ -21,8 +21,6 @@ export function UserList({ showColors, users }: Props) {
       </thead>
       <tbody>
         {users.map((user, index) => {
-          console.log("user", user);
-          
           const backgroundColor = index % 2 === 0 ? '#333' : '#555';
           const backgroundColor2 = index % 2 === 0 ? '#fff' : '#00ffcc';
           const color = showColors ? backgroundColor : backgroundColor2;

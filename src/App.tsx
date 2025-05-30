@@ -1,74 +1,60 @@
-import { useEffect, useState } from 'react'
-import './App.css'
-import { type User } from './types.d'
-import  UserList from './component/UsersList'
+import { useEffect, useState } from "react";
+import "./App.css";
+import { type User } from "./types.d";
+import UserList from "./component/UsersList";
 
 function App() {
-  const [users, setUsers] = useState<User[]>([])
-  const [showColors, setShowColors] = useState(false)
-  const [sortCountry, setSortCountry] = useState(false)
-  const [ sortUserbyCountry, setSortUserbyCountry] = useState(users)
+  const [users, setUsers] = useState<User[]>([]);
+  const [showColors, setShowColors] = useState(false);
+  const [sortCountry, setSortCountry] = useState(false);
 
-  const toggleColors = () => {
-    setShowColors(!showColors)
-  }
+  const sortedUsers = sortCountry
+    ? [...users].sort((user1, user2) =>
+        user1.location.country.localeCompare(user2.location.country)
+      )
+    : users;
 
-  const sortCountries = () => {
-    const nextSortState = !sortCountry
-    if(nextSortState){
-      const copyUsers = [...users]
-      const sortedUsers = copyUsers.sort((user1, user2) => user1.location.country.localeCompare(user2.location.country));
-      setSortUserbyCountry(sortedUsers)
-    } else{
-      setSortUserbyCountry(users)
-    }
-    setSortCountry(nextSortState)
-  }
+  const toggleColors = () => setShowColors((prev) => !prev);
+
+  const toggleSortCountries = () => setSortCountry((prev) => !prev);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("https://randomuser.me/api?results=100")
-        if (!res.ok) throw new Error(`HTTPS error! status: ${res.status}`)
-      
-        const data = await res.json()
-        setUsers(data.results)
-        setSortUserbyCountry(data.results)
-        } catch (err) {
-         console.error(`Error getting users: ${err}`)
-      }
-    }
+        const res = await fetch("https://randomuser.me/api?results=100");
+        if (!res.ok) throw new Error(`HTTPS error! status: ${res.status}`);
 
-    fetchUsers()
-    
-  }, [])
+        const data = await res.json();
+        setUsers(data.results);
+      } catch (err) {
+        console.error(`Error getting users: ${err}`);
+      }
+    };
+
+    fetchUsers();
+  }, []);
   return (
-      <div className='App'>
-        <h1>Test</h1>
-        <header>
-          <ul className="menu">
-            <li> 
-              <button type="button" onClick={toggleColors}> 
-              Change color of row
+    <div className="App">
+      <h1>Test</h1>
+      <header>
+        <ul className="menu">
+          <li>
+            <button type="button" onClick={toggleColors}>
+              Toggle row colors
             </button>
-            </li>
-            <li> 
-              <button type="button" onClick={sortCountries}> 
+          </li>
+          <li>
+            <button type="button" onClick={toggleSortCountries}>
               Sort by country
             </button>
-            </li>
-            <li> 
-              <button type="button" onClick={toggleColors}> 
-              tests
-            </button>
-            </li>
-          </ul>
-        </header>
-        <main>
-          <UserList users={sortUserbyCountry} showColors={showColors}/>
-        </main>
-      </div>
-  )
+          </li>
+        </ul>
+      </header>
+      <main>
+        <UserList users={sortedUsers} showColors={showColors} />
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
