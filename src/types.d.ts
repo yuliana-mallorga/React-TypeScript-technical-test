@@ -1,4 +1,10 @@
-export interface APIResponse {
+declare global {
+    interface Array<T> {
+        toSorted(compareFn?: (user1:T, user2:T) => number): T[]
+    } 
+}
+
+export interface APIResults {
     results: User[];
     info:    Info;
 }

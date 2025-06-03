@@ -9,14 +9,14 @@ function App() {
   const [sortCountry, setSortCountry] = useState(false);
 
   const sortedUsers = sortCountry
-    ? [...users].sort((user1, user2) =>
+    ? users.toSorted((user1, user2) =>
         user1.location.country.localeCompare(user2.location.country)
       )
     : users;
 
-  const toggleColors = () => setShowColors((prev) => !prev);
+  const toggleColors = () => setShowColors((prevState) => !prevState);
 
-  const toggleSortCountries = () => setSortCountry((prev) => !prev);
+  const toggleSortCountries = () => setSortCountry((prevState) => !prevState);
 
   useEffect(() => {
     const fetchUsers = async () => {
