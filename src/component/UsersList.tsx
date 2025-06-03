@@ -3,9 +3,10 @@ import { type User } from "../types.d";
 interface Props {
   users: User[];
   showColors: boolean;
+  handleDeleteUser: (uuid: string) => void;
 }
 
-export function UserList({ showColors, users }: Props) {
+export function UserList({ showColors, users, handleDeleteUser }: Props) {
   return (
     <table className="usersTable">
       <thead>
@@ -44,7 +45,7 @@ export function UserList({ showColors, users }: Props) {
               <td>
                 <button
                   type="button"
-                  onClick={() => console.log("Delete user", user.login.uuid)}
+                  onClick={() => handleDeleteUser(user.login.uuid)}
                 >
                   Delete
                 </button>

@@ -7,7 +7,7 @@ function App() {
   const [users, setUsers] = useState<User[]>([]);
   const [showColors, setShowColors] = useState(false);
   const [sortCountry, setSortCountry] = useState(false);
-
+ 
   const sortedUsers = sortCountry
     ? users.toSorted((user1, user2) =>
         user1.location.country.localeCompare(user2.location.country)
@@ -17,6 +17,10 @@ function App() {
   const toggleColors = () => setShowColors((prevState) => !prevState);
 
   const toggleSortCountries = () => setSortCountry((prevState) => !prevState);
+
+  const handleDeleteUser = ( uuid: string) => {
+     setUsers(prevUsers => prevUsers.filter( user => user.login.uuid !== uuid))
+  }
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -51,7 +55,7 @@ function App() {
         </ul>
       </header>
       <main>
-        <UserList users={sortedUsers} showColors={showColors} />
+        <UserList users={sortedUsers} showColors={showColors} handleDeleteUser={handleDeleteUser} />
       </main>
     </div>
   );
