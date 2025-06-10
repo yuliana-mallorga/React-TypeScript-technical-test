@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { type User } from "./types.d";
 import UserList from "./component/UsersList";
@@ -7,6 +7,7 @@ function App() {
   const [users, setUsers] = useState<User[]>([]);
   const [showColors, setShowColors] = useState(false);
   const [sortCountry, setSortCountry] = useState(false);
+  const originalUsers = useRef<User[]>([])
  
   const sortedUsers = sortCountry
     ? users.toSorted((user1, user2) =>
@@ -20,7 +21,11 @@ function App() {
 
   const handleDeleteUser = ( uuid: string) => {
      setUsers(prevUsers => prevUsers.filter( user => user.login.uuid !== uuid))
-  }
+  };
+
+  const handleRefresh = () => {
+    setUsers(originalUsers.current)
+  };
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -30,6 +35,7 @@ function App() {
 
         const data = await res.json();
         setUsers(data.results);
+        originalUsers.current = data.results;
       } catch (err) {
         console.error(`Error getting users: ${err}`);
       }
@@ -50,6 +56,11 @@ function App() {
           <li>
             <button type="button" onClick={toggleSortCountries}>
               Sort by country
+            </button>
+          </li>
+          <li>
+            <button type="button" onClick={handleRefresh}>
+              Reset status
             </button>
           </li>
         </ul>
