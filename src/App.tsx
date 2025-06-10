@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
 import { type User } from "./types.d";
 import UserList from "./component/UsersList";
@@ -7,13 +7,9 @@ function App() {
   const [users, setUsers] = useState<User[]>([]);
   const [showColors, setShowColors] = useState(false);
   const [sortCountry, setSortCountry] = useState(false);
-  const originalUsers = useRef<User[]>([])
- 
-  const sortedUsers = sortCountry
-    ? users.toSorted((user1, user2) =>
-        user1.location.country.localeCompare(user2.location.country)
-      )
-    : users;
+  const [filterByCountry, setFilterByCountry] = useState<string | null>(null)
+
+  const originalUsers = useRef<User[]>([]);
 
   const toggleColors = () => setShowColors((prevState) => !prevState);
 
@@ -23,10 +19,8 @@ function App() {
      setUsers(prevUsers => prevUsers.filter( user => user.login.uuid !== uuid))
   };
 
-  const handleRefresh = () => {
-    setUsers(originalUsers.current)
-  };
-
+  const handleRefresh = () => setUsers(originalUsers.current);
+  
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -43,6 +37,22 @@ function App() {
 
     fetchUsers();
   }, []);
+
+  const filteredUsers = useMemo(() => {
+    return typeof filterByCountry === "string" && filterByCountry.length > 0
+    ? users.filter(user => {
+      return user.location.country.toLowerCase().includes(filterByCountry.toLowerCase())
+    }): users;
+  }, [users, filterByCountry])
+
+  const sortedUsers = useMemo(()=>{
+    return sortCountry
+    ? filteredUsers.toSorted(
+      (user1, user2) => user1.location.country.localeCompare(user2.location.country)
+      )
+    : filteredUsers;
+  }, [filteredUsers, sortCountry])
+
   return (
     <div className="App">
       <h1>Test</h1>
@@ -62,6 +72,9 @@ function App() {
             <button type="button" onClick={handleRefresh}>
               Reset status
             </button>
+          </li>
+          <li>
+            <input placeholder="Filter By Country" onChange={(e)=> {setFilterByCountry(e.target.value)}}/>
           </li>
         </ul>
       </header>
