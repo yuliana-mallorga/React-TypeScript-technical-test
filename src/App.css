@@ -10,13 +10,18 @@
   padding: 0;
   margin: 0;
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
   text-align: center;
 }
 
 .menu button {
  padding: 5px 16px;
+}
+
+.pointer {
+  cursor:all-scroll;
 }
 /*---------------------End of menu css---------------------*/
 /* ----------------------------table --------------------------*/
