@@ -51,29 +51,19 @@ function App() {
   }, [users, filterByCountry])
 
   const sortedUsers = useMemo(()=>{
-    console.log("into usememo", sorting);
-    if (sorting === SortBy.NONE) {
-      return filteredUsers
-    };
-
-    let sortedFn =  (user1:User, user2:User) => user1.location.country.localeCompare(user2.location.country)
-
-    if (sorting === SortBy.NAME) {
-      sortedFn =  (user1, user2) => user1.name.first.localeCompare(user2.name.first)
-
-    } 
     
-    if (sorting === SortBy.LAST) {
-      sortedFn =  (user1, user2) => user1.name.last.localeCompare(user2.name.last)
-
-    } 
+    if (sorting === SortBy.NONE) return filteredUsers
     
-    if (sorting === SortBy.COUNTRY){
-      sortedFn =  (user1, user2) => user1.location.country.localeCompare(user2.location.country)
-
+    const compareProperties: Record<string, (user: User) => string> = {
+      [SortBy.COUNTRY]: user => user.location.country,
+      [SortBy.NAME]: user => user.name.first,
+      [SortBy.LAST]: user => user.name.last
     }
 
-    return filteredUsers.toSorted(sortedFn)
+    return filteredUsers.toSorted((user1:User, user2:User) =>{
+      const extracProperty = compareProperties[sorting]
+      return extracProperty(user1).localeCompare(extracProperty(user2))
+    })
   }, [filteredUsers, sorting])
 
   return (
